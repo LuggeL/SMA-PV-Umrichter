@@ -13,10 +13,10 @@ require_once(__MODULE__ . '/SMARegister.php');
  *
  * @version     0.1
  * @category    Symcon
- * @package
- * @author      Lugge Lex
- *
- *
+ * @package     de.codeking.symcon
+ * @author      Frank Herrmann <frank@codeking.de>
+ * @link        https://codeking.de
+ * @link        https://github.com/CodeKing/de.codeking.symcon
  *
  */
 class SMAModbus extends Module
@@ -286,46 +286,45 @@ class SMAModbus extends Module
      * detect if it's daytime
      * @return bool
      */
-     /**
-    *private function _isDay()
-    *{
-    *    // return true on configuration
-    *    if (!$this->ReadPropertyInteger('daytime')) {
-    *        return true;
-    *    }
-*
-*        if (is_null($this->isDay)) {
-*            // default value
-*            $this->isDay = false;
-*
-*            // get location module
-*            $location_id = $this->_getLocationId();
-*
-*            // get all location variables
-*            $location_variables = IPS_GetChildrenIDs($location_id);
-*
-*            // search for isDay variable
-*            foreach ($location_variables AS $variable_id) {
-*                if ($variable = IPS_GetObject($variable_id)) {
-*                    if (strtolower($variable['ObjectIdent']) == 'isday') {
-*                        $this->isDay = GetValueBoolean($variable['ObjectID']);
-*                    }
-*                }
-*            }
-*        }
-*
-*        // if it's day, enable current values timer, otherwise disable it!
-*        if ($this->isDay) {
-*            $this->SetTimerInterval('UpdateCurrent', $this->ReadPropertyInteger('interval_current') * 1000);
-*        } else {
-*            $this->SetTimerInterval('UpdateCurrent', 0);
-*        }
-*
-*        // return value
-*        return $this->isDay;
-*    }
-*
-*
+    private function _isDay()
+    {
+        // return true on configuration
+        if (!$this->ReadPropertyInteger('daytime')) {
+            return true;
+        }
+
+        if (is_null($this->isDay)) {
+            // default value
+            $this->isDay = false;
+
+            // get location module
+            $location_id = $this->_getLocationId();
+
+            // get all location variables
+            $location_variables = IPS_GetChildrenIDs($location_id);
+
+            // search for isDay variable
+            foreach ($location_variables AS $variable_id) {
+                if ($variable = IPS_GetObject($variable_id)) {
+                    if (strtolower($variable['ObjectIdent']) == 'isday') {
+                        $this->isDay = GetValueBoolean($variable['ObjectID']);
+                    }
+                }
+            }
+        }
+
+        // if it's day, enable current values timer, otherwise disable it!
+        if ($this->isDay) {
+            $this->SetTimerInterval('UpdateCurrent', $this->ReadPropertyInteger('interval_current') * 1000);
+        } else {
+            $this->SetTimerInterval('UpdateCurrent', 0);
+        }
+
+        // return value
+        return $this->isDay;
+    }
+
+    /**
      * create custom variable profile
      * @param string $profile_id
      * @param string $name
